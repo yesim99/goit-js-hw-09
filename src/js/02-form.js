@@ -2,12 +2,22 @@
 
 const form = document.querySelector(".feedback-form");
 const localStorageKey = "feedback-form-state";
-form.elements.email.value = localStorage.getItem(localStorageKey) ?? "";
-form.elements.message.value = localStorage.getItem(localStorageKey)
-    ?? "";
+const formData = {
+    email: "",
+    message: "",
+};
+
+const getData = JSON.parse(localStorage.getItem(localStorageKey));
+const email = getData.email || "";
+const message = getData.message || "";
+
+Yani:
+//form.elements.email.value = localStorage.getItem(localStorageKey) ?? "";
+//form.elements.message.value = localStorage.getItem(localStorageKey)
+//  ?? "";
 
 form.addEventListener("input", (event) => {
-    localStorage.setItem(localStorageKey, event.target.value);
+    localStorage.setItem(localStorageKey, JSON.stringify(formData));
 });
 
 form.addEventListener('submit', (e) => {
@@ -15,7 +25,9 @@ form.addEventListener('submit', (e) => {
 
     const email = form.elements.email.value.trim();
     const message = form.elements.message.value.trim();
+    localStorage.removeItem(localStorageKey);//fonksiyonun içinde yazılmalı
+    form.reset();//fonksiyonun içine yazılmalı
+
 });
 
-localStorage.removeItem(localStorageKey);
-form.reset();
+console.log(formData);
